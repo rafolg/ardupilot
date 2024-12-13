@@ -625,13 +625,13 @@ protected:
     enum DriverOptions : int16_t {
         UBX_MBUseUart2    = (1U << 0U),
         SBF_UseBaseForYaw = (1U << 1U),
-        UBX_Use115200     = (1U << 2U),
+        UBX_Use57600      = (1U << 2U),
         UAVCAN_MBUseDedicatedBus  = (1 << 3U),
         HeightEllipsoid   = (1U << 4),
         GPSL5HealthOverride = (1U << 5),
         AlwaysRTCMDecode = (1U << 6),
         DisableRTCMDecode = (1U << 7),
-        UBX_Use57600     = (1U << 8),
+        UBX_Use115200     = (1U << 8),
     };
 
     // check if an option is set
