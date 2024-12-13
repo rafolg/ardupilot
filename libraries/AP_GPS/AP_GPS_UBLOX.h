@@ -47,6 +47,8 @@
  * the uBlox into 230400 no matter what rate it is configured
  * for.
  */
+#define UBLOX_SET_BINARY_57600 "\265\142\006\001\003\000\001\006\001\022\117$PUBX,41,1,0023,0001,57600,0*1A\r\n"
+
 #define UBLOX_SET_BINARY_115200 "\265\142\006\001\003\000\001\006\001\022\117$PUBX,41,1,0023,0001,115200,0*1C\r\n"
 
 // a variant with 230400 baudrate

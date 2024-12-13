@@ -530,6 +530,12 @@ void AP_GPS::send_blob_start(uint8_t instance)
         static const char blob[] = UBLOX_SET_BINARY_115200;
         send_blob_start(instance, blob, sizeof(blob));
         return;
+    } else {
+        if (type == GPS_TYPE_UBLOX && option_set(DriverOptions::UBX_Use57600)) {
+            static const char blob[] = UBLOX_SET_BINARY_57600;
+            send_blob_start(instance, blob, sizeof(blob));
+            return;
+        }
     }
 #endif // AP_GPS_UBLOX_ENABLED
 
@@ -756,6 +762,7 @@ AP_GPS_Backend *AP_GPS::_detect_instance(uint8_t instance)
         if ((type == GPS_TYPE_AUTO ||
              type == GPS_TYPE_UBLOX) &&
             ((!_auto_config && _baudrates[dstate->current_baud] >= 38400) ||
+             (_baudrates[dstate->current_baud] >= 57600 && option_set(DriverOptions::UBX_Use57600)) ||
              (_baudrates[dstate->current_baud] >= 115200 && option_set(DriverOptions::UBX_Use115200)) ||
              _baudrates[dstate->current_baud] == 230400) &&
             AP_GPS_UBLOX::_detect(dstate->ublox_detect_state, data)) {

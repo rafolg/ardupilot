@@ -631,6 +631,7 @@ protected:
         GPSL5HealthOverride = (1U << 5),
         AlwaysRTCMDecode = (1U << 6),
         DisableRTCMDecode = (1U << 7),
+        UBX_Use57600     = (1U << 8),
     };
 
     // check if an option is set
