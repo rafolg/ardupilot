@@ -82,7 +82,7 @@ const uint32_t AP_GPS::_baudrates[] = {9600U, 115200U, 4800U, 19200U, 38400U, 57
 // right mode.
 const char AP_GPS::_initialisation_blob[] =
 #if AP_GPS_UBLOX_ENABLED
-    UBLOX_SET_BINARY_230400
+    UBLOX_SET_BINARY_57600
 #endif
 #if AP_GPS_SIRF_ENABLED
     SIRF_SET_BINARY
@@ -239,7 +239,7 @@ const AP_Param::GroupInfo AP_GPS::var_info[] = {
     // @Param: _DRV_OPTIONS
     // @DisplayName: driver options
     // @Description: Additional backend specific options
-    // @Bitmask: 0:Use UART2 for moving baseline on ublox,1:Use base station for GPS yaw on SBF,2:Use baudrate 57600,3:Use dedicated CAN port b/w GPSes for moving baseline,4:Use ellipsoid height instead of AMSL,5:Override GPS satellite health of L5 band from L1 health,6:Enable RTCM full parse even for a single channel,7:Disable automatic full RTCM parsing when RTCM seen on more than one channel,8:Use baudrate 115200
+    // @Bitmask: 0:Use UART2 for moving baseline on ublox,1:Use base station for GPS yaw on SBF,2:Use baudrate 115200,3:Use dedicated CAN port b/w GPSes for moving baseline,4:Use ellipsoid height instead of AMSL,5:Override GPS satellite health of L5 band from L1 health,6:Enable RTCM full parse even for a single channel,7:Disable automatic full RTCM parsing when RTCM seen on more than one channel
     // @User: Advanced
     AP_GROUPINFO("_DRV_OPTIONS", 22, AP_GPS, _driver_options, 0),
 
@@ -530,12 +530,6 @@ void AP_GPS::send_blob_start(uint8_t instance)
         static const char blob[] = UBLOX_SET_BINARY_115200;
         send_blob_start(instance, blob, sizeof(blob));
         return;
-    } else {
-        if (type == GPS_TYPE_UBLOX && option_set(DriverOptions::UBX_Use57600)) {
-            static const char blob[] = UBLOX_SET_BINARY_57600;
-            send_blob_start(instance, blob, sizeof(blob));
-            return;
-        }
     }
 #endif // AP_GPS_UBLOX_ENABLED
 
@@ -762,7 +756,7 @@ AP_GPS_Backend *AP_GPS::_detect_instance(uint8_t instance)
         if ((type == GPS_TYPE_AUTO ||
              type == GPS_TYPE_UBLOX) &&
             ((!_auto_config && _baudrates[dstate->current_baud] >= 38400) ||
-             (_baudrates[dstate->current_baud] >= 57600 && option_set(DriverOptions::UBX_Use57600)) ||
+             _baudrates[dstate->current_baud] == 57600 ||
              (_baudrates[dstate->current_baud] >= 115200 && option_set(DriverOptions::UBX_Use115200)) ||
              _baudrates[dstate->current_baud] == 230400) &&
             AP_GPS_UBLOX::_detect(dstate->ublox_detect_state, data)) {
